@@ -7,13 +7,8 @@ st.set_page_config(page_title="종이 다이어리", page_icon="📔", layout="c
 
 st.markdown("""
 <style>
-.stApp {
-    background: #f2e7d5;
-    color: #594632;
-}
-h1, h2, h3 {
-    color: #765638;
-}
+.stApp { background: #f2e7d5; color: #594632; }
+h1, h2, h3 { color: #765638; }
 div.stButton > button {
     background: #fffaf0;
     color: #594632;
@@ -21,38 +16,28 @@ div.stButton > button {
     border-radius: 8px;
     min-height: 45px;
 }
-div.stButton > button:hover {
-    background: #ead7bb;
-    border-color: #a87952;
-}
+div.stButton > button:hover { background: #ead7bb; }
 .paper {
-    background-color: #fffaf0;
+    background: #fffaf0;
     background-image: repeating-linear-gradient(
-        0deg,
-        rgba(130, 100, 65, 0.035) 0px,
-        rgba(130, 100, 65, 0.035) 1px,
-        transparent 1px,
-        transparent 5px
+        0deg, rgba(130,100,65,.035) 0px,
+        rgba(130,100,65,.035) 1px, transparent 1px, transparent 5px
     );
     border: 1px solid #e2d1b7;
     border-radius: 12px;
-    padding: 20px;
+    padding: 16px;
 }
 </style>
 """, unsafe_allow_html=True)
 
 if "page" not in st.session_state:
     st.session_state.page = "calendar"
-
 if "year" not in st.session_state:
     st.session_state.year = date.today().year
-
 if "month" not in st.session_state:
     st.session_state.month = date.today().month
-
 if "selected_date" not in st.session_state:
-    st.session_state.selected_date = date.today()
-
+    st.session_state.selected_date = date.today().isoformat()
 if "events" not in st.session_state:
     st.session_state.events = {}
 
@@ -62,7 +47,7 @@ if st.session_state.page == "calendar":
     left, center, right = st.columns([1, 3, 1])
 
     with left:
-        if st.button("← 이전", use_container_width=True):
+        if st.button("← 이전"):
             st.session_state.month -= 1
             if st.session_state.month < 1:
                 st.session_state.month = 12
@@ -70,13 +55,10 @@ if st.session_state.page == "calendar":
             st.rerun()
 
     with center:
-        st.subheader(
-            f"{st.session_state.year}년 "
-            f"{st.session_state.month}월"
-        )
+        st.subheader(f"{st.session_state.year}년 {st.session_state.month}월")
 
     with right:
-        if st.button("다음 →", use_container_width=True):
+        if st.button("다음 →"):
             st.session_state.month += 1
             if st.session_state.month > 12:
                 st.session_state.month = 1
@@ -85,38 +67,31 @@ if st.session_state.page == "calendar":
 
     st.markdown('<div class="paper">', unsafe_allow_html=True)
 
-    weekdays = ["일", "월", "화", "수", "목", "금", "토"]
     cols = st.columns(7)
-
-    for col, weekday in zip(cols, weekdays):
+    for col, weekday in zip(cols, ["일", "월", "화", "수", "목", "금", "토"]):
         col.markdown(f"**{weekday}**")
 
     weeks = calendar.Calendar(firstweekday=6).monthdayscalendar(
-        st.session_state.year,
-        st.session_state.month
+        st.session_state.year, st.session_state.month
     )
 
     for week in weeks:
         cols = st.columns(7)
         for col, day in zip(cols, week):
             if day == 0:
-                col.write(" ")
+                col.write("")
                 continue
 
-            selected = date(
-                st.session_state.year,
-                st.session_state.month,
-                day
-            )
+            selected = date(st.session_state.year, st.session_state.month, day)
             key = selected.isoformat()
             info = st.session_state.events.get(key, {})
             label = str(day)
 
             if info.get("title"):
-                label += "\n✦ " + info["title"][:8]
+                label += "\n✦ " + info["title"][:6]
 
             if col.button(label, key=f"day_{key}", use_container_width=True):
-                st.session_state.selected_date = selected
+                st.session_state.selected_date = key
                 st.session_state.page = "day"
                 st.rerun()
 
@@ -124,27 +99,25 @@ if st.session_state.page == "calendar":
     st.caption("날짜를 클릭하면 해당 날짜의 일정 페이지로 이동해.")
 
 else:
-    selected = st.session_state.selected_date
+    selected = date.fromisoformat(st.session_state.selected_date)
     key = selected.isoformat()
 
-    st.button(
-        "← 달력으로 돌아가기",
-        on_click=lambda: setattr(st.session_state, "page", "calendar")
-    )
+    if st.button("← 달력으로 돌아가기"):
+        st.session_state.page = "calendar"
+        st.rerun()
 
-    st.header(f"🗓️ {selected.year}년 {selected.month}월 {selected.day}일")
+    st.header(f"{selected.year}년 {selected.month}월 {selected.day}일")
 
     info = st.session_state.events.setdefault(
         key, {"title": "", "tasks": []}
     )
 
-    title = st.text_input("중요한 날의 제목", value=info.get("title", ""))
-    info["title"] = title
+    info["title"] = st.text_input("중요한 날의 제목", value=info["title"])
 
     st.divider()
     st.subheader("오늘의 일정")
 
-    with st.form("add_task"):
+    with st.form("add_task", clear_on_submit=True):
         task_time = st.time_input("시간")
         task_text = st.text_input("할 일", placeholder="예: 수학 공부하기")
         add = st.form_submit_button("일정 추가")
@@ -168,4 +141,4 @@ else:
                 info["tasks"].pop(i)
                 st.rerun()
 
-    st.caption("현재 버전은 세션 임시 저장 방식이야.")
+    st.caption("현재 버전은 임시 저장 방식이야.")
