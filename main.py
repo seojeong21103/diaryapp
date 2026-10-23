@@ -1,77 +1,68 @@
-
+import base64
 import calendar
 from datetime import date
+from pathlib import Path
+
 import streamlit as st
 
 st.set_page_config(page_title="종이 다이어리", page_icon="📔", layout="centered")
 
-st.markdown("""
-<style>
-.stApp {
-    background-color: #f2e7d5;
-    color: #594632;
-}
-</style>
-""", unsafe_allow_html=True)
-<style>
-.stApp {
-    background-color: #f2e7d5;
-    background-image: url("paper.jpg");
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    color: #594632;
-}
-import base64
-from pathlib import Path
-
-# 종이 이미지 불러오기
+# 종이 배경 이미지: main.py와 같은 폴더에 paper.jpg를 두세요.
 paper_path = Path(__file__).parent / "paper.jpg"
 
 if paper_path.exists():
-    paper_base64 = base64.b64encode(
-        paper_path.read_bytes()
-    ).decode("utf-8")
+    paper_base64 = base64.b64encode(paper_path.read_bytes()).decode("utf-8")
+    background_css = f"""
+    background-image: url("data:image/jpeg;base64,{paper_base64}");
+    """
+else:
+    background_css = "background-color: #f2e7d5;"
 
-    st.markdown(
-        f"""
-        <style>
-        .stApp {{
-            background-image: url(
-                "data:image/jpeg;base64,{paper_base64}"
-            ) !important;
-            background-size: cover !important;
-            background-position: center !important;
-            background-repeat: no-repeat !important;
-            background-attachment: fixed !important;
-        }}
-        </style>
-        """,
-        unsafe_allow_html=True
-    )
+st.markdown(
+    f"""
+    <style>
+    .stApp {{
+        {background_css}
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        color: #594632;
+    }}
 
-h1, h2, h3 { color: #765638; }
-div.stButton > button {
-    background: #fffaf0;
-    color: #594632;
-    border: 1px solid #dfc9aa;
-    border-radius: 8px;
-    min-height: 45px;
-}
-div.stButton > button:hover { background: #ead7bb; }
-.paper {
-    background: #fffaf0;
-    background-image: repeating-linear-gradient(
-        0deg, rgba(130,100,65,.035) 0px,
-        rgba(130,100,65,.035) 1px, transparent 1px, transparent 5px
-    );
-    border: 1px solid #e2d1b7;
-    border-radius: 12px;
-    padding: 16px;
-}
-</style>
-""", unsafe_allow_html=True)
+    h1, h2, h3 {{
+        color: #765638;
+    }}
+
+    div.stButton > button {{
+        background: rgba(255, 250, 240, 0.92);
+        color: #594632;
+        border: 1px solid #dfc9aa;
+        border-radius: 8px;
+        min-height: 45px;
+    }}
+
+    div.stButton > button:hover {{
+        background: #ead7bb;
+    }}
+
+    .paper {{
+        background: rgba(255, 250, 240, 0.72);
+        background-image: repeating-linear-gradient(
+            0deg,
+            rgba(130, 100, 65, 0.035) 0px,
+            rgba(130, 100, 65, 0.035) 1px,
+            transparent 1px,
+            transparent 5px
+        );
+        border: 1px solid #e2d1b7;
+        border-radius: 12px;
+        padding: 16px;
+    }}
+    </style>
+    """,
+    unsafe_allow_html=True,
+)
 
 if "page" not in st.session_state:
     st.session_state.page = "calendar"
@@ -166,11 +157,13 @@ else:
         add = st.form_submit_button("일정 추가")
 
     if add and task_text.strip():
-        info["tasks"].append({
-            "time": task_time.strftime("%H:%M"),
-            "text": task_text.strip(),
-            "memo": ""
-        })
+        info["tasks"].append(
+            {
+                "time": task_time.strftime("%H:%M"),
+                "text": task_text.strip(),
+                "memo": "",
+            }
+        )
         st.rerun()
 
     for i, task in enumerate(info["tasks"]):
@@ -178,7 +171,7 @@ else:
             task["memo"] = st.text_area(
                 "간편 메모",
                 value=task.get("memo", ""),
-                key=f"memo_{key}_{i}"
+                key=f"memo_{key}_{i}",
             )
             if st.button("일정 삭제", key=f"delete_{key}_{i}"):
                 info["tasks"].pop(i)
