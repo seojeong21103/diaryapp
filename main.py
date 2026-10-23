@@ -9,6 +9,13 @@ st.markdown("""
 <style>
 .stApp {
     background-color: #f2e7d5;
+    color: #594632;
+}
+</style>
+""", unsafe_allow_html=True)
+<style>
+.stApp {
+    background-color: #f2e7d5;
     background-image: url("paper.jpg");
     background-size: cover;
     background-position: center;
