@@ -7,7 +7,15 @@ st.set_page_config(page_title="종이 다이어리", page_icon="📔", layout="c
 
 st.markdown("""
 <style>
-
+.stApp {
+    background-color: #f2e7d5;
+    background-image: url("paper.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    color: #594632;
+}
 import base64
 from pathlib import Path
 
