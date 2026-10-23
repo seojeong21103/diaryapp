@@ -7,7 +7,35 @@ st.set_page_config(page_title="종이 다이어리", page_icon="📔", layout="c
 
 st.markdown("""
 <style>
-.stApp { background: #f2e7d5; color: #594632; }
+
+import base64
+from pathlib import Path
+
+# 종이 이미지 불러오기
+paper_path = Path(__file__).parent / "paper.jpg"
+
+if paper_path.exists():
+    paper_base64 = base64.b64encode(
+        paper_path.read_bytes()
+    ).decode("utf-8")
+
+    st.markdown(
+        f"""
+        <style>
+        .stApp {{
+            background-image: url(
+                "data:image/jpeg;base64,{paper_base64}"
+            ) !important;
+            background-size: cover !important;
+            background-position: center !important;
+            background-repeat: no-repeat !important;
+            background-attachment: fixed !important;
+        }}
+        </style>
+        """,
+        unsafe_allow_html=True
+    )
+
 h1, h2, h3 { color: #765638; }
 div.stButton > button {
     background: #fffaf0;
