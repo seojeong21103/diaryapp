@@ -18,22 +18,60 @@ if paper_path.exists():
 else:
     background_css = "background-color: #f2e7d5;"
 
+
 st.markdown(
     f"""
     <style>
-    /* 기존 CSS */
+    .stApp {{
+        {background_css}
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        color: #594632;
+    }}
 
-    html, body, [class*="st-"], .stApp,
+    html, body, [class*="st-"],
     .stApp p, .stApp span, .stApp label,
     .stApp input, .stApp textarea, .stApp button,
-    .stApp h1, .stApp h2, .stApp h3, .stApp div {
+    .stApp h1, .stApp h2, .stApp h3, .stApp div {{
         font-family: "궁서", "Gungsuh", serif !important;
-    }
+    }}
 
+    h1, h2, h3 {{
+        color: #765638;
+    }}
+
+    div.stButton > button {{
+        background: rgba(255, 250, 240, 0.92);
+        color: #594632;
+        border: 1px solid #dfc9aa;
+        border-radius: 8px;
+        min-height: 45px;
+    }}
+
+    div.stButton > button:hover {{
+        background: #ead7bb;
+    }}
+
+    .paper {{
+        background: rgba(255, 250, 240, 0.72);
+        background-image: repeating-linear-gradient(
+            0deg,
+            rgba(130, 100, 65, 0.035) 0px,
+            rgba(130, 100, 65, 0.035) 1px,
+            transparent 1px,
+            transparent 5px
+        );
+        border: 1px solid #e2d1b7;
+        border-radius: 12px;
+        padding: 16px;
+    }}
     </style>
     """,
     unsafe_allow_html=True,
 )
+
    
 
     .stApp {{
