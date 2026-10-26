@@ -22,7 +22,15 @@ else:
 st.markdown(
     f"""
     <style>
-   
+    .stApp {{
+        {background_css}
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        color: #594632;
+        font-family: "궁서", "Gungsuh", serif !important;
+    }}
 
     html, body, [class*="st-"],
     .stApp p, .stApp span, .stApp label,
@@ -65,50 +73,7 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-   
-
-    .stApp {{
-        {background_css}
-        background-size: cover;
-        background-position: center;
-        background-repeat: no-repeat;
-        background-attachment: fixed;
-        color: #594632;
-    }}
-
-    h1, h2, h3 {{
-        color: #765638;
-    }}
-
-    div.stButton > button {{
-        background: rgba(255, 250, 240, 0.92);
-        color: #594632;
-        border: 1px solid #dfc9aa;
-        border-radius: 8px;
-        min-height: 45px;
-    }}
-
-    div.stButton > button:hover {{
-        background: #ead7bb;
-    }}
-
-    .paper {{
-        background: rgba(255, 250, 240, 0.72);
-        background-image: repeating-linear-gradient(
-            0deg,
-            rgba(130, 100, 65, 0.035) 0px,
-            rgba(130, 100, 65, 0.035) 1px,
-            transparent 1px,
-            transparent 5px
-        );
-        border: 1px solid #e2d1b7;
-        border-radius: 12px;
-        padding: 16px;
-    }}
-    </style>
-    """,
-    unsafe_allow_html=True,
-)
+    
 
 if "page" not in st.session_state:
     st.session_state.page = "calendar"
