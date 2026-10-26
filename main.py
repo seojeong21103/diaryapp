@@ -21,21 +21,20 @@ else:
 st.markdown(
     f"""
     <style>
-/* 페이지 전체 글씨를 궁서체로 변경 */
-html, body, [class*="st-"],
-.stApp,
-.stApp p,
-.stApp span,
-.stApp label,
-.stApp input,
-.stApp textarea,
-.stApp button,
-.stApp h1,
-.stApp h2,
-.stApp h3,
-.stApp div {
-    font-family: "궁서", "Gungsuh", serif !important;
-}
+    /* 기존 CSS */
+
+    html, body, [class*="st-"], .stApp,
+    .stApp p, .stApp span, .stApp label,
+    .stApp input, .stApp textarea, .stApp button,
+    .stApp h1, .stApp h2, .stApp h3, .stApp div {
+        font-family: "궁서", "Gungsuh", serif !important;
+    }
+
+    </style>
+    """,
+    unsafe_allow_html=True,
+)
+   
 
     .stApp {{
         {background_css}
