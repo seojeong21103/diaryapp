@@ -22,14 +22,7 @@ else:
 st.markdown(
     f"""
     <style>
-    .stApp {{
-        {background_css}
-        background-size: cover;
-        background-position: center;
-        background-repeat: no-repeat;
-        background-attachment: fixed;
-        color: #594632;
-    }}
+   
 
     html, body, [class*="st-"],
     .stApp p, .stApp span, .stApp label,
