@@ -75,7 +75,15 @@ if "selected_date" not in st.session_state:
 if "events" not in st.session_state:
     st.session_state.events = {}
 
-st.title("📔 나의 종이 다이어리")
+title_col, icon_col = st.columns([10, 1])
+
+with title_col:
+    st.title("나의 종이 다이어리")
+
+with icon_col:
+    st.write("")
+    if st.button("📔", key="go_next"):
+        st.switch_page("pages/next.py")
 
 if st.session_state.page == "calendar":
     left, center, right = st.columns([1, 3, 1])
