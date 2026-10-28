@@ -32,12 +32,26 @@ st.markdown(
         font-family: "궁서", "Gungsuh", serif !important;
     }}
 
-    html, body, [class*="st-"],
-    .stApp p, .stApp span, .stApp label,
-    .stApp input, .stApp textarea, .stApp button,
-    .stApp h1, .stApp h2, .stApp h3, .stApp div {{
-        font-family: "궁서", "Gungsuh", serif !important;
-    }}
+   html, body, [class*="st-"] {
+    font-family: "궁서", "Gungsuh", serif !important;
+}
+
+.stApp p,
+.stApp label,
+.stApp input,
+.stApp textarea,
+.stApp button,
+.stApp h1,
+.stApp h2,
+.stApp h3 {
+    font-family: "궁서", "Gungsuh", serif !important;
+}
+
+/* 펼치기 아이콘의 글꼴은 유지 */
+.stApp [class*="material-symbols"],
+.stApp [class*="material-icons"] {
+    font-family: "Material Symbols Rounded", "Material Icons" !important;
+}
 
     h1, h2, h3 {{
         color: #765638;
