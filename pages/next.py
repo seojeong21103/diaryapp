@@ -15,10 +15,17 @@ st.markdown(
         color: #594632;
     }
 
-    html, body, p, label, button, input, textarea,
-    h1, h2, h3, [class*="st-"] {
-        font-family: "궁서", "Gungsuh", serif !important;
-    }
+   html, body, p, label, button, input, textarea,
+h1, h2, h3 {
+    font-family: "궁서", "Gungsuh", serif !important;
+}
+
+/* Streamlit 아이콘은 원래 아이콘 글꼴 유지 */
+[data-testid="stIconMaterial"],
+.material-symbols-rounded,
+.material-icons {
+    font-family: "Material Symbols Rounded" !important;
+}
 
     h1, h2, h3 {
         color: #765638;
