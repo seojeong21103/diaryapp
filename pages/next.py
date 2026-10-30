@@ -7,26 +7,37 @@ st.set_page_config(
     layout="centered",
 )
 
-st.markdown(
-    """
-    <style>
-    html, body, p, label, button, input, textarea, h1, h2, h3 {
-        font-family: "돋움", "Dotum", sans-serif;
-    }
-    .stApp {
-        background-color: #f2e7d5;
-        color: #594632;
-    }
-    </style>
-    """,
-    unsafe_allow_html=True,
-)
-
 if "diary_theme" not in st.session_state:
     st.session_state.diary_theme = "기본"
 
 if "diary_font" not in st.session_state:
     st.session_state.diary_font = "돋움체"
+
+font_map = {
+    "돋움체": '"돋움", "Dotum", sans-serif',
+    "궁서체": '"궁서", "Gungsuh", serif',
+    "바탕체": '"바탕", "Batang", serif',
+    "맑은 고딕": '"맑은 고딕", "Malgun Gothic", sans-serif',
+    "굴림체": '"굴림", "Gulim", sans-serif',
+}
+preview_font = font_map.get(
+    st.session_state.diary_font, font_map["돋움체"]
+)
+
+st.markdown(
+    f"""
+    <style>
+    html, body, p, label, button, input, textarea, h1, h2, h3 {{
+        font-family: {preview_font} !important;
+    }}
+    .stApp {{
+        background-color: #f2e7d5;
+        color: #594632;
+    }}
+    </style>
+    """,
+    unsafe_allow_html=True,
+)
 
 st.title("🎨 다이어리 꾸미기")
 st.write("원하는 테마와 글씨체를 선택해 봐.")
@@ -97,7 +108,7 @@ if st.button("✨ 선택한 디자인 적용", use_container_width=True):
         st.session_state.diary_font = font
 
     st.success("선택한 디자인을 적용했어!")
-    st.rerun()
+    st.switch_page("main.py")
 
 if st.button("📔 메인 다이어리로 돌아가기", use_container_width=True):
     st.switch_page("main.py")
