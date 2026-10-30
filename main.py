@@ -7,72 +7,125 @@ import streamlit as st
 
 st.set_page_config(page_title="종이 다이어리", page_icon="📔", layout="centered")
 
-# 종이 배경 이미지: main.py와 같은 폴더에 paper.jpg를 두세요.
+# 선택한 테마와 글씨체 불러오기
+theme = st.session_state.get("diary_theme", "기본")
+font = st.session_state.get("diary_font", "돋움체")
+
+font_map = {
+    "돋움체": '"돋움", "Dotum", sans-serif',
+    "궁서체": '"궁서", "Gungsuh", serif',
+    "바탕체": '"바탕", "Batang", serif',
+    "맑은 고딕": '"맑은 고딕", "Malgun Gothic", sans-serif',
+    "굴림체": '"굴림", "Gulim", sans-serif',
+}
+font_family = font_map.get(font, font_map["돋움체"])
+
+# 테마별 색상
+themes = {
+    "기본": {
+        "background": "#f2e7d5",
+        "color": "#594632",
+        "heading": "#765638",
+        "button": "rgba(255, 250, 240, 0.92)",
+        "button_hover": "#ead7bb",
+        "border": "#dfc9aa",
+        "paper": "rgba(255, 250, 240, 0.72)",
+    },
+    "도트": {
+        "background": "#e9e4f7",
+        "color": "#40375d",
+        "heading": "#62518e",
+        "button": "#f5f1ff",
+        "button_hover": "#dcd2f5",
+        "border": "#bcb0df",
+        "paper": "rgba(250, 247, 255, 0.82)",
+    },
+    "숲": {
+        "background": "#e3eddf",
+        "color": "#344b35",
+        "heading": "#426b45",
+        "button": "#f3f8ef",
+        "button_hover": "#d1e2cb",
+        "border": "#b4c9ad",
+        "paper": "rgba(247, 251, 243, 0.82)",
+    },
+    "호러": {
+        "background": "#211f24",
+        "color": "#eee5e5",
+        "heading": "#d06a70",
+        "button": "#393139",
+        "button_hover": "#563b43",
+        "border": "#76515b",
+        "paper": "rgba(48, 42, 49, 0.88)",
+    },
+    "한국": {
+        "background": "#eee3cf",
+        "color": "#554333",
+        "heading": "#8b493d",
+        "button": "#faf2e3",
+        "button_hover": "#e8d2b4",
+        "border": "#c9aa83",
+        "paper": "rgba(255, 248, 232, 0.82)",
+    },
+}
+colors = themes.get(theme, themes["기본"])
+
+# 기본 테마일 때만 종이 이미지 사용
 paper_path = Path(__file__).parent / "paper.jpg"
-
-if paper_path.exists():
+background_css = f"background-color: {colors['background']};"
+if theme == "기본" and paper_path.exists():
     paper_base64 = base64.b64encode(paper_path.read_bytes()).decode("utf-8")
-    background_css = f"""
-    background-image: url("data:image/jpeg;base64,{paper_base64}");
-    """
-else:
-    background_css = "background-color: #f2e7d5;"
-
-
+    background_css = (
+        f'background-image: url("data:image/jpeg;base64,{paper_base64}");'
+    )
 
 st.markdown(
-    """
+    f"""
     <style>
-    .stApp {
-        background-color: #f2e7d5;
+    .stApp {{
+        {background_css}
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
         background-attachment: fixed;
-        color: #594632;
-        font-family: "궁서", "Gungsuh", serif !important;
-    }
+        color: {colors["color"]};
+        font-family: {font_family} !important;
+    }}
 
-    .stApp p,
-    .stApp label,
-    .stApp input,
-    .stApp textarea,
-    .stApp button,
-    .stApp h1,
-    .stApp h2,
-    .stApp h3 {
-        font-family: "궁서", "Gungsuh", serif !important;
-    }
+    .stApp p, .stApp label, .stApp input, .stApp textarea,
+    .stApp button, .stApp h1, .stApp h2, .stApp h3,
+    .stApp [data-testid="stMarkdownContainer"] {{
+        font-family: {font_family} !important;
+        color: {colors["color"]};
+    }}
 
-    h1, h2, h3 {
-        color: #765638;
-    }
+    h1, h2, h3 {{
+        color: {colors["heading"]} !important;
+    }}
 
-    div.stButton > button {
-        background: rgba(255, 250, 240, 0.92);
-        color: #594632;
-        border: 1px solid #dfc9aa;
+    div.stButton > button {{
+        background: {colors["button"]};
+        color: {colors["color"]};
+        border: 1px solid {colors["border"]};
         border-radius: 8px;
         min-height: 45px;
-    }
+    }}
 
-    div.stButton > button:hover {
-        background: #ead7bb;
-    }
+    div.stButton > button:hover {{
+        background: {colors["button_hover"]};
+        border-color: {colors["border"]};
+    }}
 
-    .paper {
-        background: rgba(255, 250, 240, 0.72);
-        border: 1px solid #e2d1b7;
+    .paper {{
+        background: {colors["paper"]};
+        border: 1px solid {colors["border"]};
         border-radius: 12px;
         padding: 16px;
-    }
+    }}
     </style>
     """,
     unsafe_allow_html=True,
 )
-
-
-    
 
 if "page" not in st.session_state:
     st.session_state.page = "calendar"
