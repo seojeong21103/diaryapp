@@ -73,11 +73,49 @@ colors = themes.get(theme, themes["기본"])
 # 기본 테마일 때만 종이 이미지 사용
 paper_path = Path(__file__).parent / "paper.jpg"
 background_css = f"background-color: {colors['background']};"
-if theme == "기본" and paper_path.exists():
-    paper_base64 = base64.b64encode(paper_path.read_bytes()).decode("utf-8")
-    background_css = (
-        f'background-image: url("data:image/jpeg;base64,{paper_base64}");'
-    )
+
+# 테마별 배경 이미지 설정
+assets_path = Path(__file__).parent / "assets"
+
+theme_images = {
+    "도트": ["pixel.png", "pixel.png.png"],
+    "숲": ["forest.png", "forest.png.png"],
+    "호러": ["horror.png", "horror.png.png"],
+    "한국": ["korea.png", "korea.png.png"],
+}
+
+background_css = f"background-color: {colors['background']};"
+
+if theme == "기본":
+    paper_path = Path(__file__).parent / "paper.jpg"
+
+    if paper_path.exists():
+        paper_base64 = base64.b64encode(
+            paper_path.read_bytes()
+        ).decode("utf-8")
+
+        background_css = (
+            f'background-image: url("data:image/jpeg;base64,{paper_base64}");'
+        )
+
+elif theme in theme_images:
+    image_path = None
+
+    for filename in theme_images[theme]:
+        candidate = assets_path / filename
+        if candidate.exists():
+            image_path = candidate
+            break
+
+    if image_path:
+        image_base64 = base64.b64encode(
+            image_path.read_bytes()
+        ).decode("utf-8")
+
+        background_css = (
+            f'background-image: url("data:image/png;base64,{image_base64}");'
+        )
+
 
 st.markdown(
     f"""
