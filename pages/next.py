@@ -13,6 +13,9 @@ if "diary_theme" not in st.session_state:
 if "diary_font" not in st.session_state:
     st.session_state.diary_font = "돋움체"
 
+if "diary_button_theme" not in st.session_state:
+    st.session_state.diary_button_theme = "기본"
+
 font_map = {
     "돋움체": '"돋움", "Dotum", sans-serif',
     "궁서체": '"궁서", "Gungsuh", serif',
@@ -20,6 +23,7 @@ font_map = {
     "맑은 고딕": '"맑은 고딕", "Malgun Gothic", sans-serif',
     "굴림체": '"굴림", "Gulim", sans-serif',
 }
+
 preview_font = font_map.get(
     st.session_state.diary_font, font_map["돋움체"]
 )
@@ -44,6 +48,7 @@ st.write("원하는 테마와 글씨체를 선택해 봐.")
 
 st.divider()
 
+# 1. 배경 테마
 st.subheader("1. 테마 선택")
 
 theme_options = ["선택 안 함", "도트", "숲", "호러", "한국"]
@@ -69,6 +74,7 @@ else:
 
 st.divider()
 
+# 2. 글씨체
 st.subheader("2. 글씨체 선택")
 
 font_options = [
@@ -100,12 +106,50 @@ if font != "선택 안 함":
 
 st.divider()
 
+# 3. 버튼 테마
+st.subheader("3. 버튼 테마 선택")
+
+button_options = [
+    "선택 안 함",
+    "숲",
+    "호러",
+    "한국",
+    "도트",
+]
+
+button_theme = st.selectbox(
+    "메인 페이지 버튼 디자인",
+    button_options,
+    index=0,
+    help="버튼 테마는 메인 페이지에만 적용돼.",
+)
+
+button_previews = {
+    "숲": "🌿 짙은 녹색과 자연스러운 둥근 디자인",
+    "호러": "🩸 검정색과 어두운 붉은색의 디자인",
+    "한국": "🏯 단청의 색상과 전통적인 디자인",
+    "도트": "🟪 픽셀 테두리와 각진 레트로 디자인",
+}
+
+if button_theme != "선택 안 함":
+    st.info(button_previews[button_theme])
+else:
+    st.caption(
+        f"현재 버튼 테마: {st.session_state.diary_button_theme}"
+    )
+
+st.divider()
+
+# 디자인 적용
 if st.button("✨ 선택한 디자인 적용", use_container_width=True):
     if theme != "선택 안 함":
         st.session_state.diary_theme = theme
 
     if font != "선택 안 함":
         st.session_state.diary_font = font
+
+    if button_theme != "선택 안 함":
+        st.session_state.diary_button_theme = button_theme
 
     st.success("선택한 디자인을 적용했어!")
     st.switch_page("main.py")
