@@ -11,6 +11,56 @@ st.set_page_config(page_title="종이 다이어리", page_icon="📔", layout="c
 theme = st.session_state.get("diary_theme", "기본")
 font = st.session_state.get("diary_font", "돋움체")
 
+button_theme = st.session_state.get(
+    "diary_button_theme", "기본"
+)
+
+button_styles = {
+    "기본": {
+        "background": "rgba(255, 250, 240, 0.92)",
+        "color": "#594632",
+        "hover": "#ead7bb",
+        "border": "#dfc9aa",
+        "radius": "8px",
+        "shadow": "none",
+    },
+    "숲": {
+        "background": "#365b3c",
+        "color": "#f3f8ef",
+        "hover": "#527b55",
+        "border": "#8eae86",
+        "radius": "16px",
+        "shadow": "0 3px 6px rgba(30, 65, 35, 0.25)",
+    },
+    "호러": {
+        "background": "#211b22",
+        "color": "#f1dada",
+        "hover": "#542b36",
+        "border": "#a04b59",
+        "radius": "2px",
+        "shadow": "2px 3px 0 #100d12",
+    },
+    "한국": {
+        "background": "#8b493d",
+        "color": "#fff1d5",
+        "hover": "#a9614c",
+        "border": "#d1aa62",
+        "radius": "4px",
+        "shadow": "inset 0 0 0 2px #8b493d, 0 0 0 3px #d1aa62",
+    },
+    "도트": {
+        "background": "#62518e",
+        "color": "#ffffff",
+        "hover": "#8875b5",
+        "border": "#40375d",
+        "radius": "0px",
+        "shadow": "3px 3px 0 #40375d",
+    },
+}
+
+button_colors = button_styles.get(
+    button_theme, button_styles["기본"]
+) 
 font_map = {
     "돋움체": '"돋움", "Dotum", sans-serif',
     "궁서체": '"궁서", "Gungsuh", serif',
@@ -141,18 +191,23 @@ st.markdown(
         color: {colors["heading"]} !important;
     }}
 
-    div.stButton > button {{
-        background: {colors["button"]};
-        color: {colors["color"]};
-        border: 1px solid {colors["border"]};
-        border-radius: 8px;
-        min-height: 45px;
-    }}
+   div.stButton > button,
+div[data-testid="stFormSubmitButton"] button {{
+    background: {button_colors["background"]} !important;
+    color: {button_colors["color"]} !important;
+    border: 2px solid {button_colors["border"]} !important;
+    border-radius: {button_colors["radius"]} !important;
+    min-height: 45px;
+    box-shadow: {button_colors["shadow"]};
+    transition: 0.2s ease;
+}}
 
-    div.stButton > button:hover {{
-        background: {colors["button_hover"]};
-        border-color: {colors["border"]};
-    }}
+div.stButton > button:hover,
+div[data-testid="stFormSubmitButton"] button:hover {{
+    background: {button_colors["hover"]} !important;
+    color: {button_colors["color"]} !important;
+    border-color: {button_colors["border"]} !important;
+}}
 
     .paper {{
         background: {colors["paper"]};
