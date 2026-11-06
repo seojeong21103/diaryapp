@@ -191,8 +191,23 @@ st.markdown(
         color: {colors["heading"]} !important;
     }}
 
-   div.stButton > button,
+  div.stButton > button,
 div[data-testid="stFormSubmitButton"] button {{
+    background: {button_colors["background"]} !important;
+    color: {button_colors["color"]} !important;
+    -webkit-text-fill-color: {button_colors["color"]} !important;
+    border: 2px solid {button_colors["border"]} !important;
+    border-radius: {button_colors["radius"]} !important;
+    min-height: 45px;
+    box-shadow: {button_colors["shadow"]};
+    transition: 0.2s ease;
+}}
+
+div.stButton > button *,
+div[data-testid="stFormSubmitButton"] button * {{
+    color: {button_colors["color"]} !important;
+    -webkit-text-fill-color: {button_colors["color"]} !important;
+}}
     background: {button_colors["background"]} !important;
     color: {button_colors["color"]} !important;
     border: 2px solid {button_colors["border"]} !important;
