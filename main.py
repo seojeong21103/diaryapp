@@ -193,7 +193,12 @@ st.markdown(
 
   div.stButton > button,
 div[data-testid="stFormSubmitButton"] button {{
-    background: {button_colors["background"]} !important;
+    background: linear-gradient(
+    180deg,
+    {button_colors["hover"]} 0%,
+    {button_colors["background"]} 50%,
+    color-mix(in srgb, {button_colors["background"]}, black 25%) 100%
+) !important;
     color: {button_colors["color"]} !important;
     -webkit-text-fill-color: {button_colors["color"]} !important;
     border: 2px solid {button_colors["border"]} !important;
